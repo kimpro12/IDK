@@ -1,0 +1,124 @@
+[
+  {
+    "id": "career-01",
+    "text": "Prioritize the task that moves the needle.",
+    "category": "focus",
+    "tone": "steady",
+    "weight": 2
+  },
+  {
+    "id": "career-02",
+    "text": "Clarify one expectation before you start.",
+    "category": "clarity",
+    "tone": "steady"
+  },
+  {
+    "id": "career-03",
+    "text": "Send the update you have been delaying.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "career-04",
+    "text": "Block time for deep work today.",
+    "category": "focus",
+    "tone": "steady",
+    "weight": 2
+  },
+  {
+    "id": "career-05",
+    "text": "Ask for feedback on one deliverable.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "career-06",
+    "text": "Document the decision while it is fresh.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "career-07",
+    "text": "Focus on outcomes, not only activity.",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "career-08",
+    "text": "Protect your focus with a clear boundary.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "career-09",
+    "text": "Celebrate progress, then plan the next step.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "career-10",
+    "text": "Write the brief in two clear sentences.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "career-11",
+    "text": "Identify the risk and name a mitigation.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "career-12",
+    "text": "Say yes to the stretch that builds skill.",
+    "category": "growth",
+    "tone": "bold"
+  },
+  {
+    "id": "career-13",
+    "text": "Close open loops before opening new ones.",
+    "category": "focus",
+    "tone": "steady"
+  },
+  {
+    "id": "career-14",
+    "text": "Seek alignment before speed.",
+    "category": "connection",
+    "tone": "soft"
+  },
+  {
+    "id": "career-15",
+    "text": "Simplify the plan to its essentials.",
+    "category": "clarity",
+    "tone": "steady"
+  },
+  {
+    "id": "career-16",
+    "text": "Ask for help when you reach a blocker.",
+    "category": "connection",
+    "tone": "steady"
+  },
+  {
+    "id": "career-17",
+    "text": "Review priorities at midday.",
+    "category": "reflection",
+    "tone": "neutral"
+  },
+  {
+    "id": "career-18",
+    "text": "Choose the meeting that matters most.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "career-19",
+    "text": "Take a short walk to reset focus.",
+    "category": "grounding",
+    "tone": "soft"
+  },
+  {
+    "id": "career-20",
+    "text": "Notice what energizes your best work.",
+    "category": "reflection",
+    "tone": "steady"
+  }
+]
