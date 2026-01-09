@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Haptics from 'expo-haptics';
 import { Audio } from 'expo-av';
@@ -25,7 +26,7 @@ import type { EnergyState } from '@/src/services/energy';
 import type { PackId } from '@/src/types/content';
 
 const HOLD_DURATION_MS = 3000;
-const HAPTIC_INTERVAL_MS = 600;
+const HAPTIC_INTERVAL_MS = 300;
 const SETTINGS_KEY = 'sign:settings';
 
 type SettingsState = {
@@ -56,11 +57,10 @@ export default function RitualScreen() {
   const [isHolding, setIsHolding] = React.useState(false);
 
   const progress = React.useRef(new Animated.Value(0)).current;
-  const holdTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hapticInterval = React.useRef<ReturnType<typeof setInterval> | null>(null);
-  const didComplete = React.useRef(false);
+  const holdTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hapticIntervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const soundRef = React.useRef<Audio.Sound | null>(null);
-  const soundReady = React.useRef(false);
+  const hasTriggeredRef = React.useRef(false);
 
   const particles = React.useMemo<Particle[]>(
     () =>
@@ -121,100 +121,76 @@ export default function RitualScreen() {
     })();
   }, []);
 
-  React.useEffect(() => {
-    let mounted = true;
-    void (async () => {
-      try {
-        const sound = new Audio.Sound();
-        const asset = require('@/src/assets/sfx/ambient.mp3');
-        await sound.loadAsync(asset, { isLooping: true, volume: 0.4 });
-        if (mounted) {
-          soundRef.current = sound;
-          soundReady.current = true;
-        } else {
-          await sound.unloadAsync();
-        }
-      } catch {
-        soundReady.current = false;
-      }
-    })();
-
-    return () => {
-      mounted = false;
-      void soundRef.current?.unloadAsync();
-      soundRef.current = null;
-      soundReady.current = false;
-    };
-  }, []);
-
   const remaining = energyState?.remaining ?? 3;
   const isPremium = energyState?.isPremium ?? false;
   const isBlocked = !isPremium && remaining <= 0;
 
   const playAmbient = React.useCallback(async () => {
-    if (!settings.soundEnabled || !soundRef.current || !soundReady.current) {
+    if (!settings.soundEnabled) {
       return;
     }
-    await soundRef.current.replayAsync();
+    try {
+      const sound = new Audio.Sound();
+      const asset = require('@/src/assets/sfx/ambient.mp3');
+      await sound.loadAsync(asset, { isLooping: true, volume: 0.4 });
+      await sound.playAsync();
+      soundRef.current = sound;
+    } catch {
+      // Missing or invalid audio should not block the ritual flow.
+    }
   }, [settings.soundEnabled]);
-
-  const stopAmbient = React.useCallback(async () => {
-    if (!soundRef.current) {
-      return;
-    }
-    await soundRef.current.stopAsync();
-  }, []);
 
   const startHaptics = React.useCallback(() => {
     if (!settings.hapticsEnabled) {
       return;
     }
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    hapticInterval.current = setInterval(() => {
+    hapticIntervalRef.current = setInterval(() => {
       void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }, HAPTIC_INTERVAL_MS);
   }, [settings.hapticsEnabled]);
 
   const stopHaptics = React.useCallback(() => {
-    if (hapticInterval.current) {
-      clearInterval(hapticInterval.current);
-      hapticInterval.current = null;
+    if (hapticIntervalRef.current) {
+      clearInterval(hapticIntervalRef.current);
+      hapticIntervalRef.current = null;
     }
   }, []);
 
-  const resetHold = React.useCallback(async () => {
-    if (holdTimeout.current) {
-      clearTimeout(holdTimeout.current);
-      holdTimeout.current = null;
+  const stopRitual = React.useCallback(async (resetTrigger = true) => {
+    if (holdTimeoutRef.current) {
+      clearTimeout(holdTimeoutRef.current);
+      holdTimeoutRef.current = null;
     }
     stopHaptics();
-    await stopAmbient();
     setIsHolding(false);
-    didComplete.current = false;
+    if (resetTrigger) {
+      hasTriggeredRef.current = false;
+    }
     Animated.timing(progress, {
       toValue: 0,
       duration: 200,
       easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start();
-  }, [progress, stopAmbient, stopHaptics]);
+    try {
+      await soundRef.current?.stopAsync();
+      await soundRef.current?.unloadAsync();
+    } catch {
+      // ignore audio cleanup errors
+    }
+    soundRef.current = null;
+  }, [progress, stopHaptics]);
 
   const completeHold = React.useCallback(async () => {
-    if (didComplete.current) {
+    if (hasTriggeredRef.current) {
       return;
     }
-    didComplete.current = true;
-    if (holdTimeout.current) {
-      clearTimeout(holdTimeout.current);
-      holdTimeout.current = null;
-    }
-    stopHaptics();
-    await stopAmbient();
-    setIsHolding(false);
+    hasTriggeredRef.current = true;
+    await stopRitual(false);
 
     const card = pickForIntent({});
     if (!card) {
-      await resetHold();
       return;
     }
 
@@ -238,13 +214,14 @@ export default function RitualScreen() {
       pathname: '/reveal',
       params: { drawId },
     });
-  }, [resetHold, router, stopAmbient, stopHaptics]);
+  }, [router, stopRitual]);
 
   const handlePressIn = React.useCallback(() => {
-    if (isBlocked || isHolding) {
+    if (isBlocked || isHolding || hasTriggeredRef.current) {
       return;
     }
     setIsHolding(true);
+    hasTriggeredRef.current = false;
     Animated.timing(progress, {
       toValue: 1,
       duration: HOLD_DURATION_MS,
@@ -253,23 +230,25 @@ export default function RitualScreen() {
     }).start();
     startHaptics();
     void playAmbient();
-    holdTimeout.current = setTimeout(() => {
+    holdTimeoutRef.current = setTimeout(() => {
       void completeHold();
     }, HOLD_DURATION_MS);
   }, [completeHold, isBlocked, isHolding, playAmbient, progress, startHaptics]);
 
   const handlePressOut = React.useCallback(() => {
-    if (didComplete.current) {
+    if (hasTriggeredRef.current) {
       return;
     }
-    void resetHold();
-  }, [resetHold]);
+    void stopRitual(true);
+  }, [stopRitual]);
 
-  React.useEffect(() => {
-    return () => {
-      void resetHold();
-    };
-  }, [resetHold]);
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        void stopRitual(true);
+      };
+    }, [stopRitual])
+  );
 
   const handleRestore = React.useCallback(async () => {
     const updated = await restoreOneEnergy();
