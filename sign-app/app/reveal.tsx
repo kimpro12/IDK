@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 
 import Card from '@/src/components/Card';
 import MutedText from '@/src/components/MutedText';
@@ -9,6 +10,10 @@ import { getTheme } from '@/src/lib/theme';
 export default function RevealScreen() {
   const colorScheme = useColorScheme();
   const theme = getTheme(colorScheme);
+  const params = useLocalSearchParams();
+  const cardText = typeof params.text === 'string' ? params.text : 'Your sign awaits.';
+  const cardId = typeof params.cardId === 'string' ? params.cardId : null;
+
   const styles = React.useMemo(
     () =>
       StyleSheet.create({
@@ -35,7 +40,8 @@ export default function RevealScreen() {
       </View>
       <Card style={{ marginTop: theme.spacing.lg }}>
         <Text style={styles.subtitle}>Sign of the moment</Text>
-        <MutedText>“Trust the quiet yes before the loud no arrives.”</MutedText>
+        <MutedText>{cardText}</MutedText>
+        {cardId ? <MutedText>Card: {cardId}</MutedText> : null}
       </Card>
     </Screen>
   );
