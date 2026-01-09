@@ -1,9 +1,9 @@
 import type { Category, MessageCard, PackId, Tone } from '@/src/types/content';
 
-import careerPack from '@/src/data/packs/career.json';
-import financePack from '@/src/data/packs/finance.json';
-import freePack from '@/src/data/packs/free.json';
-import lovePack from '@/src/data/packs/love.json';
+import careerPackData from '@/src/data/packs/career.json';
+import financePackData from '@/src/data/packs/finance.json';
+import freePackData from '@/src/data/packs/free.json';
+import lovePackData from '@/src/data/packs/love.json';
 
 type Rng = () => number;
 
@@ -12,6 +12,11 @@ type IntentPickOptions = {
   tone?: Tone;
   packIds?: PackId[];
 };
+
+const freePack = freePackData as MessageCard[];
+const lovePack = lovePackData as MessageCard[];
+const careerPack = careerPackData as MessageCard[];
+const financePack = financePackData as MessageCard[];
 
 const packMap: Record<PackId, MessageCard[]> = {
   free: freePack,
