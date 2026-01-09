@@ -207,6 +207,7 @@ export default function RitualScreen() {
       mode: 'ritual',
       cardIds: [card.id],
       packIds: [packId],
+      cardText: card.text,
       question: null,
       note: null,
       isDaily: false,

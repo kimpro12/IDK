@@ -69,6 +69,7 @@ export default function DailyScreen() {
             mode: 'daily',
             cardIds: [picked.id],
             packIds: [picked.id.split('-')[0]],
+            cardText: picked.text,
             question: null,
             note: null,
             isDaily: true,

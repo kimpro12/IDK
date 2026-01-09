@@ -63,6 +63,7 @@ export default function SpreadScreen() {
         mode: mode === '1' ? 'spread1' : 'spread3',
         cardIds: cards.map((card) => card.id),
         packIds,
+        cardText: cards.map((card) => card.text).join(' | '),
         question: null,
         note: null,
         isDaily: false,

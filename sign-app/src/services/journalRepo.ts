@@ -6,6 +6,7 @@ type DrawInput = {
   mode: string;
   cardIds: string[];
   packIds: string[];
+  cardText?: string | null;
   question?: string | null;
   note?: string | null;
   isDaily: boolean;
@@ -19,6 +20,7 @@ type DrawRow = {
   mode: string;
   cardIds: string;
   packIds: string;
+  cardText: string | null;
   question: string | null;
   note: string | null;
   isDaily: number;
@@ -40,6 +42,7 @@ const mapRowToDraw = (row: DrawRow): DrawRecord => ({
   mode: row.mode,
   cardIds: parseArray(row.cardIds),
   packIds: parseArray(row.packIds),
+  cardText: row.cardText ?? null,
   question: row.question ?? null,
   note: row.note ?? null,
   isDaily: Boolean(row.isDaily),
@@ -58,14 +61,15 @@ type ListDrawsOptions = {
 export const addDraw = async (draw: DrawInput): Promise<void> => {
   const db = await getDatabase();
   await db.runAsync(
-    `INSERT INTO draws (id, createdAt, mode, cardIds, packIds, question, note, isDaily)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO draws (id, createdAt, mode, cardIds, packIds, cardText, question, note, isDaily)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       draw.id,
       draw.createdAt,
       draw.mode,
       serializeArray(draw.cardIds),
       serializeArray(draw.packIds),
+      draw.cardText ?? null,
       draw.question ?? null,
       draw.note ?? null,
       draw.isDaily ? 1 : 0,
@@ -82,10 +86,10 @@ export const listDraws = async (options: ListDrawsOptions = {}): Promise<DrawRec
   if (searchText) {
     const rows = await db.getAllAsync<DrawRow>(
       `SELECT * FROM draws
-       WHERE question LIKE ? OR note LIKE ?
+       WHERE question LIKE ? OR note LIKE ? OR cardText LIKE ?
        ORDER BY createdAt DESC
        LIMIT ? OFFSET ?`,
-      [`%${searchText}%`, `%${searchText}%`, limit, offset]
+      [`%${searchText}%`, `%${searchText}%`, `%${searchText}%`, limit, offset]
     );
     return rows.map(mapRowToDraw);
   }
