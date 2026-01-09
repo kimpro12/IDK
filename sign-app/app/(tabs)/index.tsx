@@ -222,8 +222,9 @@ export default function RitualScreen() {
     setEnergyState(updated);
 
     const packId = card.id.split('-')[0] as PackId;
+    const drawId = `draw_${Date.now()}_${Math.random().toString(16).slice(2)}`;
     await addDraw({
-      id: `draw_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+      id: drawId,
       createdAt: Date.now(),
       mode: 'ritual',
       cardIds: [card.id],
@@ -235,7 +236,7 @@ export default function RitualScreen() {
 
     router.push({
       pathname: '/reveal',
-      params: { cardId: card.id, text: card.text },
+      params: { drawId },
     });
   }, [resetHold, router, stopAmbient, stopHaptics]);
 

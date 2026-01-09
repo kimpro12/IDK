@@ -89,3 +89,13 @@ export const deterministicDailyPick = (
   const cards = normalizedPacks.flatMap((id) => loadPack(id));
   return pickWeighted(cards, rng);
 };
+
+export const findCardById = (cardId: string): MessageCard | undefined => {
+  for (const packId of defaultPackIds) {
+    const found = packMap[packId].find((card) => card.id === cardId);
+    if (found) {
+      return found;
+    }
+  }
+  return undefined;
+};
