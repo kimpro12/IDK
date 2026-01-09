@@ -20,7 +20,6 @@ const runMigrations = async (db: SQLite.SQLiteDatabase): Promise<void> => {
       mode TEXT NOT NULL,
       cardIds TEXT NOT NULL,
       packIds TEXT NOT NULL,
-      cardText TEXT,
       question TEXT,
       note TEXT,
       isDaily INTEGER NOT NULL
@@ -31,14 +30,14 @@ const runMigrations = async (db: SQLite.SQLiteDatabase): Promise<void> => {
       createdAt INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_draws_createdAt ON draws(createdAt DESC);
-    CREATE INDEX IF NOT EXISTS idx_draws_cardText ON draws(cardText);
     CREATE INDEX IF NOT EXISTS idx_favorites_drawId ON favorites(drawId);
   `);
   try {
-    await db.runAsync(`ALTER TABLE draws ADD COLUMN cardText TEXT`);
+    await db.runAsync('ALTER TABLE draws ADD COLUMN cardText TEXT');
   } catch {
     // Column already exists.
   }
+  await db.execAsync('CREATE INDEX IF NOT EXISTS idx_draws_cardText ON draws(cardText);');
 };
 
 export const initializeDatabase = async (): Promise<SQLite.SQLiteDatabase> => {
