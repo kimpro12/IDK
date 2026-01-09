@@ -1,0 +1,125 @@
+[
+  {
+    "id": "free-01",
+    "text": "Breathe in and name one intention for today.",
+    "category": "ritual",
+    "tone": "soft",
+    "weight": 2
+  },
+  {
+    "id": "free-02",
+    "text": "Notice the smallest win from yesterday.",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "free-03",
+    "text": "Feel your feet and slow your pace.",
+    "category": "grounding",
+    "tone": "neutral"
+  },
+  {
+    "id": "free-04",
+    "text": "Choose one task and finish it fully.",
+    "category": "action",
+    "tone": "bold",
+    "weight": 2
+  },
+  {
+    "id": "free-05",
+    "text": "Clear one surface to clear one thought.",
+    "category": "focus",
+    "tone": "steady"
+  },
+  {
+    "id": "free-06",
+    "text": "Ask what matters most in this hour.",
+    "category": "clarity",
+    "tone": "soft"
+  },
+  {
+    "id": "free-07",
+    "text": "Take the next tiny step forward.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "free-08",
+    "text": "Send a short message of care.",
+    "category": "connection",
+    "tone": "soft"
+  },
+  {
+    "id": "free-09",
+    "text": "Light a candle and reset your breath.",
+    "category": "ritual",
+    "tone": "steady"
+  },
+  {
+    "id": "free-10",
+    "text": "Write one sentence about today.",
+    "category": "reflection",
+    "tone": "neutral"
+  },
+  {
+    "id": "free-11",
+    "text": "Drink water, then check in again.",
+    "category": "grounding",
+    "tone": "steady"
+  },
+  {
+    "id": "free-12",
+    "text": "Say no to one distraction today.",
+    "category": "action",
+    "tone": "bold",
+    "weight": 2
+  },
+  {
+    "id": "free-13",
+    "text": "Silence notifications for thirty minutes.",
+    "category": "focus",
+    "tone": "neutral"
+  },
+  {
+    "id": "free-14",
+    "text": "Name the feeling before the story.",
+    "category": "clarity",
+    "tone": "soft"
+  },
+  {
+    "id": "free-15",
+    "text": "Try the version that feels simpler.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "free-16",
+    "text": "Offer gratitude without explaining why.",
+    "category": "connection",
+    "tone": "steady"
+  },
+  {
+    "id": "free-17",
+    "text": "Stretch your shoulders and exhale slowly.",
+    "category": "ritual",
+    "tone": "soft"
+  },
+  {
+    "id": "free-18",
+    "text": "What boundary would help tomorrow?",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "free-19",
+    "text": "Take three slow breaths before you respond.",
+    "category": "grounding",
+    "tone": "neutral"
+  },
+  {
+    "id": "free-20",
+    "text": "Focus on the next right thing.",
+    "category": "clarity",
+    "tone": "steady"
+  }
+]
