@@ -1,40 +1,46 @@
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import Card from '@/src/components/Card';
+import MutedText from '@/src/components/MutedText';
+import Screen from '@/src/components/Screen';
+import { getTheme } from '@/src/lib/theme';
 
 export default function JournalScreen() {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
+  const styles = React.useMemo(
+    () =>
+      StyleSheet.create({
+        title: {
+          color: theme.colors.text,
+          ...theme.typography.title,
+        },
+        subtitle: {
+          color: theme.colors.text,
+          ...theme.typography.subtitle,
+        },
+        section: {
+          gap: theme.spacing.sm,
+        },
+      }),
+    [theme]
+  );
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Journal</ThemedText>
-      <ThemedText style={styles.copy}>
-        Capture rituals, spreads, and reflections. Sync later when you&apos;re ready.
-      </ThemedText>
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">Latest entry</ThemedText>
-        <ThemedText>“I felt the shift when I named the boundary.”</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">Next action</ThemedText>
-        <ThemedText>Start a new journal entry after your next ritual.</ThemedText>
-      </ThemedView>
-    </ThemedView>
+    <Screen>
+      <View style={styles.section}>
+        <Text style={styles.title}>Journal</Text>
+        <MutedText>Capture rituals, spreads, and reflections. Sync later when you&apos;re ready.</MutedText>
+      </View>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.subtitle}>Latest entry</Text>
+        <MutedText>“I felt the shift when I named the boundary.”</MutedText>
+      </Card>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.subtitle}>Next action</Text>
+        <MutedText>Start a new journal entry after your next ritual.</MutedText>
+      </Card>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    gap: 16,
-  },
-  copy: {
-    opacity: 0.8,
-  },
-  card: {
-    padding: 16,
-    borderRadius: 16,
-    gap: 8,
-    backgroundColor: 'rgba(120, 120, 120, 0.08)',
-  },
-});

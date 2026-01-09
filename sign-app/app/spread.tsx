@@ -1,44 +1,50 @@
-import { StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import Card from '@/src/components/Card';
+import MutedText from '@/src/components/MutedText';
+import Screen from '@/src/components/Screen';
+import { getTheme } from '@/src/lib/theme';
 
 export default function SpreadScreen() {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
+  const styles = React.useMemo(
+    () =>
+      StyleSheet.create({
+        title: {
+          color: theme.colors.text,
+          ...theme.typography.title,
+        },
+        subtitle: {
+          color: theme.colors.text,
+          ...theme.typography.subtitle,
+        },
+        section: {
+          gap: theme.spacing.sm,
+        },
+      }),
+    [theme]
+  );
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Three-Card Spread</ThemedText>
-      <ThemedText style={styles.copy}>
-        Past, present, and possibility — draw three signs to map the moment.
-      </ThemedText>
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">Past</ThemedText>
-        <ThemedText>Release the loop that already taught its lesson.</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">Present</ThemedText>
-        <ThemedText>Notice the small proof that you are supported.</ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.card}>
-        <ThemedText type="subtitle">Possibility</ThemedText>
-        <ThemedText>Say yes to the experiment that feels like freedom.</ThemedText>
-      </ThemedView>
-    </ThemedView>
+    <Screen>
+      <View style={styles.section}>
+        <Text style={styles.title}>Three-Card Spread</Text>
+        <MutedText>Past, present, and possibility — draw three signs to map the moment.</MutedText>
+      </View>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.subtitle}>Past</Text>
+        <MutedText>Release the loop that already taught its lesson.</MutedText>
+      </Card>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.subtitle}>Present</Text>
+        <MutedText>Notice the small proof that you are supported.</MutedText>
+      </Card>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.subtitle}>Possibility</Text>
+        <MutedText>Say yes to the experiment that feels like freedom.</MutedText>
+      </Card>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 24,
-    gap: 16,
-  },
-  copy: {
-    opacity: 0.8,
-  },
-  card: {
-    padding: 16,
-    borderRadius: 16,
-    gap: 8,
-    backgroundColor: 'rgba(120, 120, 120, 0.08)',
-  },
-});
