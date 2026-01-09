@@ -1,0 +1,124 @@
+[
+  {
+    "id": "love-01",
+    "text": "Offer warmth without fixing the moment.",
+    "category": "connection",
+    "tone": "soft",
+    "weight": 2
+  },
+  {
+    "id": "love-02",
+    "text": "Notice where you feel most safe.",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "love-03",
+    "text": "Say the honest thing with kindness.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "love-04",
+    "text": "Name the love you want to receive.",
+    "category": "clarity",
+    "tone": "soft"
+  },
+  {
+    "id": "love-05",
+    "text": "Let closeness build in small steps.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "love-06",
+    "text": "Slow your breathing before a hard talk.",
+    "category": "grounding",
+    "tone": "neutral"
+  },
+  {
+    "id": "love-07",
+    "text": "Ask a simple question and listen.",
+    "category": "connection",
+    "tone": "steady",
+    "weight": 2
+  },
+  {
+    "id": "love-08",
+    "text": "Place a hand on your heart and soften.",
+    "category": "ritual",
+    "tone": "soft"
+  },
+  {
+    "id": "love-09",
+    "text": "Put your phone away during connection.",
+    "category": "focus",
+    "tone": "steady"
+  },
+  {
+    "id": "love-10",
+    "text": "What does respect look like today?",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "love-11",
+    "text": "Share one appreciation without a follow-up.",
+    "category": "connection",
+    "tone": "uplifting"
+  },
+  {
+    "id": "love-12",
+    "text": "Choose curiosity over assumption.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "love-13",
+    "text": "Hold eye contact for one full breath.",
+    "category": "ritual",
+    "tone": "soft"
+  },
+  {
+    "id": "love-14",
+    "text": "Repair quickly with a clear apology.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "love-15",
+    "text": "Invite play into the routine.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "love-16",
+    "text": "Offer reassurance, then pause.",
+    "category": "connection",
+    "tone": "steady"
+  },
+  {
+    "id": "love-17",
+    "text": "Let silence be a place of trust.",
+    "category": "grounding",
+    "tone": "neutral"
+  },
+  {
+    "id": "love-18",
+    "text": "Notice the care already offered.",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "love-19",
+    "text": "Ask for what you need in one sentence.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "love-20",
+    "text": "Release the urge to win the moment.",
+    "category": "clarity",
+    "tone": "soft"
+  }
+]
