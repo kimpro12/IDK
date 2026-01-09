@@ -33,11 +33,13 @@ const SETTINGS_KEY = 'sign:settings';
 type SettingsState = {
   soundEnabled: boolean;
   hapticsEnabled: boolean;
+  soundVolume: number;
 };
 
 const defaultSettings: SettingsState = {
   soundEnabled: true,
   hapticsEnabled: true,
+  soundVolume: 0.4,
 };
 
 type Particle = {
@@ -115,6 +117,7 @@ export default function RitualScreen() {
           setSettings({
             soundEnabled: parsed.soundEnabled ?? defaultSettings.soundEnabled,
             hapticsEnabled: parsed.hapticsEnabled ?? defaultSettings.hapticsEnabled,
+            soundVolume: parsed.soundVolume ?? defaultSettings.soundVolume,
           });
         } catch {
           setSettings(defaultSettings);
@@ -134,7 +137,7 @@ export default function RitualScreen() {
     try {
       const sound = new Audio.Sound();
       const asset = require('@/src/assets/sfx/ambient.mp3');
-      await sound.loadAsync(asset, { isLooping: true, volume: 0.4 });
+      await sound.loadAsync(asset, { isLooping: true, volume: settings.soundVolume });
       await sound.playAsync();
       soundRef.current = sound;
     } catch {
