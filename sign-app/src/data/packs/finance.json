@@ -1,0 +1,122 @@
+[
+  {
+    "id": "finance-01",
+    "text": "Check one account and note the balance.",
+    "category": "grounding",
+    "tone": "steady"
+  },
+  {
+    "id": "finance-02",
+    "text": "Pause before buying and wait ten minutes.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "finance-03",
+    "text": "Set aside a small amount for savings.",
+    "category": "action",
+    "tone": "uplifting"
+  },
+  {
+    "id": "finance-04",
+    "text": "Review one subscription for value.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "finance-05",
+    "text": "Name a spending trigger you can avoid.",
+    "category": "reflection",
+    "tone": "soft"
+  },
+  {
+    "id": "finance-06",
+    "text": "Plan a low-cost reward for this week.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "finance-07",
+    "text": "Move one bill into auto-pay today.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "finance-08",
+    "text": "Track one purchase in your notes.",
+    "category": "reflection",
+    "tone": "neutral"
+  },
+  {
+    "id": "finance-09",
+    "text": "Ask what future-you will thank you for.",
+    "category": "clarity",
+    "tone": "steady"
+  },
+  {
+    "id": "finance-10",
+    "text": "Choose progress over perfection in budgeting.",
+    "category": "reflection",
+    "tone": "steady"
+  },
+  {
+    "id": "finance-11",
+    "text": "Compare prices before a big purchase.",
+    "category": "clarity",
+    "tone": "neutral"
+  },
+  {
+    "id": "finance-12",
+    "text": "Cancel one expense that drains you.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "finance-13",
+    "text": "Check your cash flow for the month.",
+    "category": "clarity",
+    "tone": "steady"
+  },
+  {
+    "id": "finance-14",
+    "text": "Decide a spending limit for today.",
+    "category": "focus",
+    "tone": "neutral"
+  },
+  {
+    "id": "finance-15",
+    "text": "Automate one transfer to savings.",
+    "category": "action",
+    "tone": "bold"
+  },
+  {
+    "id": "finance-16",
+    "text": "Set a simple money goal for the week.",
+    "category": "growth",
+    "tone": "uplifting"
+  },
+  {
+    "id": "finance-17",
+    "text": "Review a receipt for patterns.",
+    "category": "reflection",
+    "tone": "neutral"
+  },
+  {
+    "id": "finance-18",
+    "text": "Call the plan the way it really is.",
+    "category": "clarity",
+    "tone": "steady"
+  },
+  {
+    "id": "finance-19",
+    "text": "Notice how calm helps your money choices.",
+    "category": "grounding",
+    "tone": "soft"
+  },
+  {
+    "id": "finance-20",
+    "text": "Celebrate a small financial win.",
+    "category": "reflection",
+    "tone": "uplifting"
+  }
+]
