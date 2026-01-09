@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -5,6 +6,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from 'react-native';
 
 import { getTheme } from '@/src/lib/theme';
+import { initializeDatabase } from '@/src/services/db';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -25,6 +27,12 @@ export default function RootLayout() {
       text: theme.colors.text,
     },
   };
+
+  useEffect(() => {
+    initializeDatabase().catch((error) => {
+      console.warn('Database initialization failed', error);
+    });
+  }, []);
 
   return (
     <ThemeProvider value={navigationTheme}>
