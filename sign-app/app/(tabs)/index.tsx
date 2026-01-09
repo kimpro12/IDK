@@ -1,98 +1,129 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { useRouter } from 'expo-router';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import Card from '@/src/components/Card';
+import MutedText from '@/src/components/MutedText';
+import PrimaryButton from '@/src/components/PrimaryButton';
+import Screen from '@/src/components/Screen';
+import { getTheme } from '@/src/lib/theme';
+import { consumeEnergy, restoreOneEnergy, resetIfNewDay } from '@/src/services/energy';
+import type { EnergyState } from '@/src/services/energy';
 
-export default function HomeScreen() {
+export default function RitualScreen() {
+  const colorScheme = useColorScheme();
+  const theme = getTheme(colorScheme);
+  const router = useRouter();
+  const [energyState, setEnergyState] = React.useState<EnergyState | null>(null);
+
+  React.useEffect(() => {
+    void (async () => {
+      const state = await resetIfNewDay(new Date());
+      setEnergyState(state);
+    })();
+  }, []);
+
+  const remaining = energyState?.remaining ?? 3;
+  const isPremium = energyState?.isPremium ?? false;
+  const isBlocked = !isPremium && remaining <= 0;
+
+  const handleNavigate = React.useCallback(
+    async (path: '/spread' | '/reveal') => {
+      if (isBlocked) {
+        return;
+      }
+      const updated = await consumeEnergy();
+      setEnergyState(updated);
+      router.push(path);
+    },
+    [isBlocked, router]
+  );
+
+  const handleRestore = React.useCallback(async () => {
+    const updated = await restoreOneEnergy();
+    setEnergyState(updated);
+  }, []);
+
+  const styles = React.useMemo(
+    () =>
+      StyleSheet.create({
+        title: {
+          color: theme.colors.text,
+          ...theme.typography.title,
+        },
+        subtitle: {
+          color: theme.colors.mutedText,
+          ...theme.typography.body,
+        },
+        sectionTitle: {
+          color: theme.colors.text,
+          ...theme.typography.subtitle,
+        },
+        cardStack: {
+          gap: theme.spacing.md,
+        },
+        buttonRow: {
+          gap: theme.spacing.sm,
+        },
+        energyRow: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        },
+        energyValue: {
+          color: theme.colors.text,
+          ...theme.typography.subtitle,
+        },
+      }),
+    [theme]
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <Screen>
+      <View style={styles.cardStack}>
+        <Text style={styles.title}>Ritual</Text>
+        <MutedText style={styles.subtitle}>
+          Set your intention, draw your signs, and ground.
+        </MutedText>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <View style={styles.energyRow}>
+          <Text style={styles.sectionTitle}>Energy</Text>
+          <Text style={styles.energyValue}>{isPremium ? '∞' : remaining}</Text>
+        </View>
+        <MutedText>
+          {isPremium ? 'Premium is unlimited.' : '3 free draws reset daily.'}
+        </MutedText>
+        {isBlocked ? (
+          <View style={{ marginTop: theme.spacing.sm }}>
+            <PrimaryButton title="Watch ad to restore 1" onPress={handleRestore} />
+          </View>
+        ) : null}
+      </Card>
+
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.sectionTitle}>Quick flow</Text>
+        <MutedText>1. Breathe for 60 seconds.</MutedText>
+        <MutedText>2. Pull a three-card spread.</MutedText>
+        <MutedText>3. Name the energy you want to amplify.</MutedText>
+      </Card>
+
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.sectionTitle}>Next</Text>
+        <View style={[styles.buttonRow, { marginTop: theme.spacing.sm }]}>
+          <PrimaryButton
+            title="Open the spread"
+            onPress={() => handleNavigate('/spread')}
+            disabled={isBlocked}
+          />
+          <PrimaryButton
+            title="Reveal a sign"
+            onPress={() => handleNavigate('/reveal')}
+            disabled={isBlocked}
+          />
+        </View>
+      </Card>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
