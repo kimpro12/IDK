@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -55,6 +56,7 @@ export default function RitualScreen() {
   const [energyState, setEnergyState] = React.useState<EnergyState | null>(null);
   const [settings, setSettings] = React.useState<SettingsState>(defaultSettings);
   const [isHolding, setIsHolding] = React.useState(false);
+  const [spreadMode, setSpreadMode] = React.useState<'1' | '3'>('3');
 
   const progress = React.useRef(new Animated.Value(0)).current;
   const holdTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -255,6 +257,13 @@ export default function RitualScreen() {
     setEnergyState(updated);
   }, []);
 
+  const handleOpenSpread = React.useCallback(() => {
+    router.push({
+      pathname: '/spread',
+      params: { mode: spreadMode },
+    });
+  }, [router, spreadMode]);
+
   const styles = React.useMemo(
     () =>
       StyleSheet.create({
@@ -278,6 +287,27 @@ export default function RitualScreen() {
         },
         buttonRow: {
           gap: theme.spacing.sm,
+        },
+        modeSwitch: {
+          flexDirection: 'row',
+          gap: theme.spacing.sm,
+          marginTop: theme.spacing.sm,
+        },
+        modeButton: {
+          flex: 1,
+          paddingVertical: theme.spacing.sm,
+          borderRadius: theme.radius.sm,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+          alignItems: 'center',
+        },
+        modeButtonActive: {
+          backgroundColor: theme.colors.primary,
+          borderColor: theme.colors.primary,
+        },
+        modeButtonText: {
+          color: theme.colors.text,
+          ...theme.typography.body,
         },
         energyRow: {
           flexDirection: 'row',
@@ -347,6 +377,25 @@ export default function RitualScreen() {
             <PrimaryButton title="Watch ad to restore 1" onPress={handleRestore} />
           </View>
         ) : null}
+      </Card>
+
+      <Card style={{ marginTop: theme.spacing.lg }}>
+        <Text style={styles.sectionTitle}>Spread mode</Text>
+        <View style={styles.modeSwitch}>
+          <TouchableOpacity
+            style={[styles.modeButton, spreadMode === '1' ? styles.modeButtonActive : null]}
+            onPress={() => setSpreadMode('1')}>
+            <Text style={styles.modeButtonText}>1-card</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.modeButton, spreadMode === '3' ? styles.modeButtonActive : null]}
+            onPress={() => setSpreadMode('3')}>
+            <Text style={styles.modeButtonText}>3-card</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.buttonRow, { marginTop: theme.spacing.sm }]}>
+          <PrimaryButton title="Open the spread" onPress={handleOpenSpread} disabled={isBlocked} />
+        </View>
       </Card>
 
       <View style={styles.ritualArea}>
