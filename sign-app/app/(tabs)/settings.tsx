@@ -259,7 +259,7 @@ export default function SettingsScreen() {
               style={styles.input}
               value={settings.dailyNotificationTime}
               onChangeText={handleTimeChange}
-              placeholder=\"20:00\"
+              placeholder="20:00"
               placeholderTextColor={theme.colors.mutedText}
             />
             <MutedText>Enter time as HH:MM.</MutedText>
