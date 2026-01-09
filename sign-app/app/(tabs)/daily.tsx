@@ -11,25 +11,11 @@ import { deterministicDailyPick, findCardById } from '@/src/services/contentEngi
 import { addDraw, listDraws } from '@/src/services/journalRepo';
 import { getStatus, requestPermissionsIfNeeded, scheduleDaily, cancelDaily } from '@/src/services/notifications';
 import type { MessageCard } from '@/src/types/content';
+import { isYesterday, toLocalDateISO } from '@/src/lib/date';
 
 const DAILY_SEED_KEY = 'sign:dailySeed';
 const DAILY_STREAK_KEY = 'sign:dailyStreak';
 const DAILY_LAST_DATE_KEY = 'sign:dailyLastDate';
-
-const toLocalDateISO = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
-const isYesterday = (dateISO: string, todayISO: string): boolean => {
-  const [year, month, day] = todayISO.split('-').map(Number);
-  const today = new Date(year, month - 1, day);
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
-  return dateISO === toLocalDateISO(yesterday);
-};
 
 export default function DailyScreen() {
   const colorScheme = useColorScheme();
